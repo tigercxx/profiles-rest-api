@@ -1,7 +1,7 @@
 from tokenize import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, filters
 from rest_framework.authentication import TokenAuthentication
 from profiles_api import serializers, models, permissions
 
@@ -98,3 +98,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         TokenAuthentication,  # rmb to add comma so it becomes a tuple
     )
     permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = (
+        "name",
+        "email",
+    )
