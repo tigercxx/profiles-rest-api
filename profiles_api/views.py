@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status, viewsets, filters
 from rest_framework.authentication import TokenAuthentication
 from profiles_api import serializers, models, permissions
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
 
 # from rest_framework.permissions import IsAuthenticated
 
@@ -103,3 +105,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         "name",
         "email",
     )
+
+
+class UserLoginApiView(ObtainAuthToken):
+    """Handle creating user auth tokens"""
+
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+    # enables auth token rendering in admin site
