@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
     BaseUserManager,
 )
+from django.conf import settings
 
 
 class UserProfileManager(BaseUserManager):
@@ -56,3 +57,20 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):  # recommended otherwise when converted to str itll be gibberish
         """return str repr of user"""
         return self.email
+
+
+class ProfileFeedItem(models.Model):
+    """Profile status update"""
+
+    user_profile = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,  # if user profile deleted, delete feed item
+    )
+    status_text = models.CharField(max_length=255)
+    created_on = models.DateTimeField(
+        auto_now_add=True
+    )  # automatically add date time stamp
+
+    def __str__(self):
+        "Return model as a str"
+        return self.status_text
